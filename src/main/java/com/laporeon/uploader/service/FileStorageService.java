@@ -1,14 +1,19 @@
 package com.laporeon.uploader.service;
 
 import com.laporeon.uploader.dto.response.FileUploadResponseDTO;
+import com.laporeon.uploader.exceptions.custom.FileNotFoundException;
 import com.laporeon.uploader.helpers.Validator;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URLConnection;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Instant;
@@ -47,4 +52,26 @@ public class FileStorageService {
                 file.getSize(),
                 Instant.now());
     }
+
+    public Resource download(String fileName) throws MalformedURLException {
+        Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
+        Resource resource = new UrlResource(filePath.toUri());
+
+        if (!resource.exists()) {
+            throw new FileNotFoundException(fileName);
+        }
+
+        return resource;
+    }
+
+    public String getContentType(String fileName) {
+        String contentType = URLConnection.guessContentTypeFromName(fileName);
+
+        if(contentType == null) {
+            return "application/octet-stream";
+        }
+
+        return contentType;
+    }
+
 }
