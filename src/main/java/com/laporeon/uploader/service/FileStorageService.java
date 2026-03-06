@@ -14,11 +14,14 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URLConnection;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Instant;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 @Service
 public class FileStorageService {
@@ -62,6 +65,15 @@ public class FileStorageService {
         }
 
         return resource;
+    }
+
+    public List<String> listFiles() throws IOException {
+        try (Stream<Path> files = Files.list(this.fileStorageLocation)) {
+            return files.filter(Files::isRegularFile)
+                        .map(path -> path.getFileName().toString())
+                        .filter(fileName -> !fileName.equals(".gitkeep"))
+                        .toList();
+        }
     }
 
     public String getContentType(String fileName) {
