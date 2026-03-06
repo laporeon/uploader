@@ -67,7 +67,7 @@ public class FileStorageService {
     public String getContentType(String fileName) {
         String contentType = URLConnection.guessContentTypeFromName(fileName);
 
-        if(contentType == null) {
+        if (contentType == null) {
             return "application/octet-stream";
         }
 
