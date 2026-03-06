@@ -31,37 +31,37 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(InvalidFileExtensionException.class)
     public ResponseEntity<ErrorResponseDTO> handleInvalidFileExtensionException(InvalidFileExtensionException ex) {
-
         ErrorResponseDTO error = new ErrorResponseDTO(
                 Instant.now(),
                 HttpStatus.BAD_REQUEST.value(),
                 "VALIDATION_ERROR",
                 ex.getMessage()
         );
+
         return ResponseEntity.badRequest().body(error);
     }
 
     @ExceptionHandler(FileNotFoundException.class)
     public ResponseEntity<ErrorResponseDTO> handleFileNotFoundException(FileNotFoundException ex) {
-
         ErrorResponseDTO error = new ErrorResponseDTO(
                 Instant.now(),
                 HttpStatus.BAD_REQUEST.value(),
                 "NOT_FOUND_ERROR",
                 ex.getMessage()
         );
-        return ResponseEntity.badRequest().body(error);
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public ResponseEntity<ErrorResponseDTO> handleMaxUploadSizeExceededException(MaxUploadSizeExceededException ex) {
-
         ErrorResponseDTO error = new ErrorResponseDTO(
                 Instant.now(),
                 HttpStatus.CONTENT_TOO_LARGE.value(),
                 "MAX_UPLOAD_SIZE_EXCEEDED_ERROR",
                 "File size exceeded the upload limit"
         );
+
         return ResponseEntity.status(HttpStatus.CONTENT_TOO_LARGE).body(error);
     }
 
