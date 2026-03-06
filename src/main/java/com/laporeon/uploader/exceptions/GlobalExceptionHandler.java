@@ -1,6 +1,8 @@
 package com.laporeon.uploader.exceptions;
 
 import com.laporeon.uploader.dto.response.ErrorResponseDTO;
+import com.laporeon.uploader.exceptions.custom.FileStorageException;
+import com.laporeon.uploader.exceptions.custom.InvalidFileExtensionException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +28,20 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(error);
     }
 
+    @ExceptionHandler(InvalidFileExtensionException.class)
+    public ResponseEntity<ErrorResponseDTO> handleInvalidFileExtensionException(InvalidFileExtensionException ex) {
+
+        ErrorResponseDTO error = new ErrorResponseDTO(
+                Instant.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                "VALIDATION_ERROR",
+                ex.getMessage()
+        );
+        return ResponseEntity.badRequest().body(error);
+    }
+
     @ExceptionHandler(MaxUploadSizeExceededException.class)
-    public ResponseEntity<ErrorResponseDTO> handleMaxUploadSize(MaxUploadSizeExceededException ex) {
+    public ResponseEntity<ErrorResponseDTO> handleMaxUploadSizeExceededException(MaxUploadSizeExceededException ex) {
 
         ErrorResponseDTO error = new ErrorResponseDTO(
                 Instant.now(),

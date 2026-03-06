@@ -1,4 +1,4 @@
-package com.laporeon.uploader.exceptions;
+package com.laporeon.uploader.exceptions.custom;
 
 public class FileStorageException extends RuntimeException {
 
