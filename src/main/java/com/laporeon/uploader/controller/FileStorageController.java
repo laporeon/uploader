@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URLConnection;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/files")
@@ -39,6 +39,12 @@ public class FileStorageController {
                              .contentType(MediaType.parseMediaType(contentType))
                              .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
                              .body(resource);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<String>> listFiles() throws IOException {
+        List<String> files = fileStorageService.listFiles();
+        return ResponseEntity.ok().body(files);
     }
 
 }
