@@ -1,6 +1,7 @@
 package com.laporeon.uploader.exceptions;
 
 import com.laporeon.uploader.dto.response.ErrorResponseDTO;
+import com.laporeon.uploader.exceptions.custom.FileNotFoundException;
 import com.laporeon.uploader.exceptions.custom.FileStorageException;
 import com.laporeon.uploader.exceptions.custom.InvalidFileExtensionException;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +36,18 @@ public class GlobalExceptionHandler {
                 Instant.now(),
                 HttpStatus.BAD_REQUEST.value(),
                 "VALIDATION_ERROR",
+                ex.getMessage()
+        );
+        return ResponseEntity.badRequest().body(error);
+    }
+
+    @ExceptionHandler(FileNotFoundException.class)
+    public ResponseEntity<ErrorResponseDTO> handleFileNotFoundException(FileNotFoundException ex) {
+
+        ErrorResponseDTO error = new ErrorResponseDTO(
+                Instant.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                "NOT_FOUND_ERROR",
                 ex.getMessage()
         );
         return ResponseEntity.badRequest().body(error);
