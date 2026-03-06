@@ -1,6 +1,7 @@
 package com.laporeon.uploader.service;
 
 import com.laporeon.uploader.dto.response.FileUploadResponseDTO;
+import com.laporeon.uploader.helpers.Validator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -18,6 +19,7 @@ import java.util.UUID;
 public class FileStorageService {
 
     private final Path fileStorageLocation;
+    private static final String DOWNLOAD_ENDPOINT = "/api/v1/files/download/";
 
     public FileStorageService(@Value("${file.upload-dir}") String uploadDir) {
         this.fileStorageLocation = Paths.get(uploadDir)
@@ -27,15 +29,14 @@ public class FileStorageService {
 
     public FileUploadResponseDTO upload(MultipartFile file) throws IOException {
         String originalFileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
-        String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
-        String fileName = UUID.randomUUID() + extension;
+        String fileExtension = Validator.validateFileExtension(originalFileName);
+        String fileName = UUID.randomUUID() + "."  + fileExtension;
 
         Path targetLocation = this.fileStorageLocation.resolve(fileName);
         file.transferTo(targetLocation);
 
         String downloadUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
-                                                        .path("/api/v1/files/download/")
-                                                        .path(fileName)
+                                                        .path(DOWNLOAD_ENDPOINT + fileName)
                                                         .toUriString();
 
         return new FileUploadResponseDTO(
