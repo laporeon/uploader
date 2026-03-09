@@ -2,8 +2,7 @@ package com.laporeon.uploader.exceptions;
 
 import com.laporeon.uploader.dto.response.ErrorResponseDTO;
 import com.laporeon.uploader.exceptions.custom.FileNotFoundException;
-import com.laporeon.uploader.exceptions.custom.FileStorageException;
-import com.laporeon.uploader.exceptions.custom.InvalidFileExtensionException;
+import com.laporeon.uploader.exceptions.custom.InvalidFileNameException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,20 +16,8 @@ import java.time.Instant;
 @Slf4j
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(FileStorageException.class)
-    public ResponseEntity<ErrorResponseDTO> handleFileStorageException(FileStorageException ex) {
-        ErrorResponseDTO error = new ErrorResponseDTO(
-                Instant.now(),
-                HttpStatus.BAD_REQUEST.value(),
-                "FILE_STORAGE_EXCEPTION",
-                ex.getMessage()
-        );
-
-        return ResponseEntity.badRequest().body(error);
-    }
-
-    @ExceptionHandler(InvalidFileExtensionException.class)
-    public ResponseEntity<ErrorResponseDTO> handleInvalidFileExtensionException(InvalidFileExtensionException ex) {
+    @ExceptionHandler(InvalidFileNameException.class)
+    public ResponseEntity<ErrorResponseDTO> handleInvalidFileNameException(InvalidFileNameException ex) {
         ErrorResponseDTO error = new ErrorResponseDTO(
                 Instant.now(),
                 HttpStatus.BAD_REQUEST.value(),
@@ -45,7 +32,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponseDTO> handleFileNotFoundException(FileNotFoundException ex) {
         ErrorResponseDTO error = new ErrorResponseDTO(
                 Instant.now(),
-                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.NOT_FOUND.value(),
                 "NOT_FOUND_ERROR",
                 ex.getMessage()
         );
