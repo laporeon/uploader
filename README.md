@@ -3,7 +3,7 @@
 ![java](https://img.shields.io/static/v1?label=java&message=21.0.10&labelColor=2d3748&color=grey&logo=openjdk&logoColor=white&style=flat)
 ![spring boot](https://img.shields.io/static/v1?label=spring%20boot&message=4.0.3&color=2d3748&logo=springboot&style=flat-square)
 ![maven](https://img.shields.io/static/v1?label=maven&message=3.9.12&labelColor=2d3748&color=grey&logo=apachemaven&logoColor=white&style=flat)
-[![MIT License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](https://github.com/laporeon/uploader/blob/main/LICENSE.md)
+[![MIT License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](https://github.com/laporeon/uploader/blob/main/LICENSE)
 
 </h1>
 
