@@ -23,9 +23,7 @@ public class FileStorageController {
     private final FileStorageService fileStorageService;
 
     @PostMapping()
-    public ResponseEntity<FileUploadResponseDTO> uploadFile(
-            @RequestParam("file")MultipartFile file
-    ) throws IOException {
+    public ResponseEntity<FileUploadResponseDTO> uploadFile(@RequestParam("file")MultipartFile file) throws IOException {
         FileUploadResponseDTO fileUploadResponseDTO = fileStorageService.upload(file);
         return ResponseEntity.status(HttpStatus.CREATED).body(fileUploadResponseDTO);
     }
@@ -45,6 +43,12 @@ public class FileStorageController {
     public ResponseEntity<List<String>> listFiles() throws IOException {
         List<String> files = fileStorageService.listFiles();
         return ResponseEntity.ok().body(files);
+    }
+
+    @DeleteMapping("/{fileName:.+}")
+    public ResponseEntity<Void> delete(@PathVariable String fileName) throws IOException {
+        fileStorageService.delete(fileName);
+        return ResponseEntity.noContent().build();
     }
 
 }
