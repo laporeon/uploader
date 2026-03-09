@@ -38,7 +38,7 @@ public class FileStorageService {
     public FileUploadResponseDTO upload(MultipartFile file) throws IOException {
         String originalFileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
         String fileExtension = Validator.validateFileExtension(originalFileName);
-        String fileName = UUID.randomUUID() + "."  + fileExtension;
+        String fileName = UUID.randomUUID() + "." + fileExtension;
 
         Path targetLocation = this.fileStorageLocation.resolve(fileName);
         file.transferTo(targetLocation);
@@ -57,14 +57,8 @@ public class FileStorageService {
     }
 
     public Resource download(String fileName) throws MalformedURLException {
-        Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
-        Resource resource = new UrlResource(filePath.toUri());
-
-        if (!resource.exists()) {
-            throw new FileNotFoundException(fileName);
-        }
-
-        return resource;
+        Validator.validateFileName(fileName);
+        return hasResource(fileName);
     }
 
     public List<String> listFiles() throws IOException {
@@ -76,6 +70,13 @@ public class FileStorageService {
         }
     }
 
+    public void delete(String fileName) throws IOException {
+        Validator.validateFileName(fileName);
+        hasResource(fileName);
+        Path filePath = resolvePath(fileName);
+        Files.delete(filePath);
+    }
+
     public String getContentType(String fileName) {
         String contentType = URLConnection.guessContentTypeFromName(fileName);
 
@@ -84,6 +85,21 @@ public class FileStorageService {
         }
 
         return contentType;
+    }
+
+    private Resource hasResource(String fileName) throws MalformedURLException {
+        Path filePath = resolvePath(fileName);
+        Resource resource = new UrlResource(filePath.toUri());
+
+        if (!resource.exists()) {
+            throw new FileNotFoundException(fileName);
+        }
+
+        return resource;
+    }
+
+    private Path resolvePath(String fileName) {
+        return this.fileStorageLocation.resolve(fileName).normalize();
     }
 
 }
