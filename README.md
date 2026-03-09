@@ -31,6 +31,7 @@ A simple REST API built for learning how to handle file uploads and downloads wi
 - Enforces a configurable maximum file size (default: 10MB).
 - Download files with correct content type detection.
 - List all available uploaded files.
+- Deletes an existing file.
 
 ## Requirements
 
@@ -77,11 +78,12 @@ The application will be available at `http://localhost:8080` (or the port you co
 
 ### Routes
 
-| Route                               | HTTP Method | Params                                | Description                 | Auth Method |
-|-------------------------------------|-------------|---------------------------------------|-----------------------------|-------------|
+| Route                               | HTTP Method | Params                               | Description                 | Auth Method |
+|-------------------------------------|-------------|--------------------------------------|-----------------------------|-------------|
 | `/api/v1/files`                     | POST        | **Body** with `file` (multipart/form-data) | Upload a file               | None        |
 | `/api/v1/files/download/{fileName}` | GET         | **Path:** `fileName`        | Download a file by its name | None        |
-| `/api/v1/files`                     | GET         | —                                     | List all uploaded files     | None        |
+| `/api/v1/files`                     | GET         | —                                    | List all uploaded files     | None        |
+| `/api/v1/files/{fileName}`          | DELETE          | **Path:** `fileName`                                     | Delete a file by its name   | None        |
 
 #### Requests
 
@@ -143,6 +145,13 @@ Response:
   "ebbeedf7-8cad-47dc-acf8-cbb96dea83f5.pdf",
   "a1b2c3d4-1234-5678-abcd-ef1234567890.png"
 ]
+```
+
+- `DELETE /api/v1/files/{fileName}`
+
+Example:
+```bash
+curl -X DELETE http://localhost:8080/api/v1/files/ebbeedf7-8cad-47dc-acf8-cbb96dea83f5.pdf
 ```
 
 [⬆ Back to the top](#uploader-api)
