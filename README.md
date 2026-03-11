@@ -14,7 +14,6 @@
 - [Getting Started](#getting-started)
     - [Configuring](#configuring)
         - [application.properties](#applicationproperties)
-        - [.env](#env)
 - [Usage](#usage)
     - [Starting](#starting)
     - [Routes](#routes)
@@ -32,6 +31,7 @@ A simple REST API built for learning how to handle file uploads and downloads wi
 - Download files with correct content type detection.
 - List all available uploaded files.
 - Deletes an existing file.
+- Interactive and modern API documentation powered by Scalar
 
 ## Requirements
 
@@ -44,9 +44,12 @@ A simple REST API built for learning how to handle file uploads and downloads wi
 
 #### **application.properties**
 
+Since the application doesn't rely on any sensitive variables, all configuration can be defined directly in 
+[application.properties](./src/main/resources/application.properties).
+
 | Property                                       | Default | Description                                  |
 |------------------------------------------------|---------|----------------------------------------------|
-| `server.port`                                  | `8080`  | Server port                                  |
+| `server.port`                                  | `8081`  | Server port                                  |
 | `file.upload-dir`                              | `tmp`   | Directory to store files                     |
 | `spring.servlet.multipart.file-size-threshold` | `2KB`   | File size threshold before writing to disk   |
 | `spring.servlet.multipart.max-file-size`       | `10MB`  | Maximum size of a single uploaded file       |
@@ -55,16 +58,6 @@ A simple REST API built for learning how to handle file uploads and downloads wi
 > [!NOTE]
 > If you change the default value for `file.upload-dir`, you must manually create the folder, since the API does not
 > handle directory creation.
-
-#### **.env**
-
-Configuring the `.env` file is optional since most values can be defined directly in [application.properties](./src/main/resources/application.properties).
-
-Rename the `.env.example` file to `.env` and modify the variables according to your needs.
-
-| Variable        | Default   | Description              |
-|-----------------|-----------|--------------------------|
-| PORT            | `8080`    | Server port              |
 
 ## Usage
 
@@ -78,12 +71,13 @@ The application will be available at `http://localhost:8080` (or the port you co
 
 ### Routes
 
-| Route                               | HTTP Method | Params                               | Description                 | Auth Method |
-|-------------------------------------|-------------|--------------------------------------|-----------------------------|-------------|
+| Route                               | HTTP Method | Params                                     | Description                 | Auth Method |
+|-------------------------------------|-------------|--------------------------------------------|-----------------------------|-------------|
+| `/docs`                             | GET         | —                                          | Scalar API documentation    | None        |
 | `/api/v1/files`                     | POST        | **Body** with `file` (multipart/form-data) | Upload a file               | None        |
-| `/api/v1/files/download/{fileName}` | GET         | **Path:** `fileName`        | Download a file by its name | None        |
-| `/api/v1/files`                     | GET         | —                                    | List all uploaded files     | None        |
-| `/api/v1/files/{fileName}`          | DELETE          | **Path:** `fileName`                                     | Delete a file by its name   | None        |
+| `/api/v1/files/download/{fileName}` | GET         | **Path:** `fileName`                       | Download a file by its name | None        |
+| `/api/v1/files`                     | GET         | —                                          | List all uploaded files     | None        |
+| `/api/v1/files/{fileName}`          | DELETE      | **Path:** `fileName`                       | Delete a file by its name   | None        |
 
 #### Requests
 
@@ -103,6 +97,7 @@ Request body (`multipart/form-data`):
 ```
 file: <binary file>
 ```
+
 Example:
 
 ```bash
@@ -127,6 +122,7 @@ Response:
 Returns the file as a binary download with the correct content type.
 
 Example:
+
 ```bash
 curl -fO http://localhost:8080/api/v1/files/download/ebbeedf7-8cad-47dc-acf8-cbb96dea83f5.pdf
 ```
@@ -134,6 +130,7 @@ curl -fO http://localhost:8080/api/v1/files/download/ebbeedf7-8cad-47dc-acf8-cbb
 - `GET /api/v1/files`
 
 Example:
+
 ```bash
 curl http://localhost:8080/api/v1/files
 ```
@@ -141,7 +138,7 @@ curl http://localhost:8080/api/v1/files
 Response:
 
 ```json
-[ 
+[
   "ebbeedf7-8cad-47dc-acf8-cbb96dea83f5.pdf",
   "a1b2c3d4-1234-5678-abcd-ef1234567890.png"
 ]
@@ -150,6 +147,7 @@ Response:
 - `DELETE /api/v1/files/{fileName}`
 
 Example:
+
 ```bash
 curl -X DELETE http://localhost:8080/api/v1/files/ebbeedf7-8cad-47dc-acf8-cbb96dea83f5.pdf
 ```
