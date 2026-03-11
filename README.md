@@ -25,12 +25,11 @@ A simple REST API built for learning how to handle file uploads and downloads wi
 
 **Key features:**
 
-- Uploads files with automatic UUID-based naming to avoid collisions.
-- Validates file extensions against a predefined allowlist.
+- Supports upload, download, listing and deletion of files.
+- Generates UUID-based naming on upload to avoid collisions
+- Validates file name and extension against custom patterns.
 - Enforces a configurable maximum file size (default: 10MB).
-- Download files with correct content type detection.
-- List all available uploaded files.
-- Deletes an existing file.
+- Automatically detects content type on download.
 - Interactive and modern API documentation powered by Scalar
 
 ## Requirements
