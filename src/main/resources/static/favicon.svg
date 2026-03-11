@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <!-- Background -->
+  <rect width="32" height="32" rx="6" fill="#1a1a2e"/>
+  
+  <!-- File shape -->
+  <path d="M8 6h10l6 6v14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z" fill="#16213e" stroke="#4f8ef7" stroke-width="1.5"/>
+  
+  <!-- Folded corner -->
+  <path d="M18 6l6 6h-4a2 2 0 0 1-2-2V6z" fill="#4f8ef7" opacity="0.6"/>
+  
+  <!-- Upload arrow -->
+  <path d="M16 22v-8" stroke="#4f8ef7" stroke-width="2" stroke-linecap="round"/>
+  <path d="M13 17l3-3 3 3" stroke="#4f8ef7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
